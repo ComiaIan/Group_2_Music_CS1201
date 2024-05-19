@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Add this line to your HTML file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Music Genre Website</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100vh; 
+        }
+
+        #homeButton {
+    position: absolute;
+    top: 6px;
+    left: 10px; /* Modified: Changed right to left */
+    background-color: #d6a94d;
+    border: none;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: transform 0.2s ease; /* Added transition property */
+}
+
+#homeButton:hover {
+    transform: scale(1.1); /* Scale up by 10% on hover */
+}
+
+
+        #genreMenu {
+            padding: 20px;
+            background-color: #f0f0f0;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+            border-radius:20px;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            padding-left: 20px;            
+        }
+        #genreMenu {
+            max-height: 650px;
+            overflow-y: auto;
+        }
+        #playlist {
+            background-color: #fff;
+            box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            padding-left: 40px;
+            padding-top: 40px;
+            max-height: 750px;
+            margin-top: 20px;
+        }
+        .song {
+            display: flex;
+            align-items: center;
+            border: 1px solid #bab9b9;
+            fill: #bab9b9;
+            border-radius: 20px;
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+        .song img {
+            width: 80px;
+            border-radius: 10px ;
+            box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .genre {
+            margin-bottom: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            
+        }
+        .genre img {
+            width: 50px;
+            margin-right: 10px;
+            border-radius: 5px;
+            box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+        }
+        .genre:hover {
+            color: rgb(0, 144, 48);
+        }
+        #musicPlayer {
+            background-color: #f0f0f0;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            border-radius: 20px 20px 0 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #content {
+            display: flex;
+            flex-grow: 1; 
+            overflow: hidden;
+            height: 680px;
+        }
+        
+        .genreInfo {
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 30px;
+
+        }
+        .genreInfo img {
+            width: 250px;
+            border-radius: 20px;
+            margin-right: 30px;
+            box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+        }
+        .genreInfo h2 {
+            font-size: 90px;
+            margin-bottom: 5px;
+            margin-top: 20px;
+        }
+        .genreInfo p {
+            width: 600px;
+        }
+
+
+        #music-controls {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 5px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: #383838c3; 
+            font-size: 24px; 
+            margin: 0 15px; 
+        }
+
+        .control-btn i {
+            cursor: pointer;
+        }
+  
+        #play-pause.playing i {
+            content: '\f04c'; 
+        }
+
+        #song-image {
+            width: 80px !important;
+            height: 80px !important;
+            border-radius: 10px !important;
+        }
+
+        @media screen and (min-width: 600px) {
+            body {
+                flex-direction: row;
+            }
+            #genreMenu {
+                width: 250px;
+                height: calc(100vh - 60px); 
+                margin-right: 10px;
+                margin-left: 10px;
+            }
+            #playlist {
+                flex-grow: 1;
+                height: calc(100vh - 60px); 
+                max-height: 600px;
+                overflow-y: auto;
+            }
+
+            #musicPlayer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                height: 60px;
+            }
+            .song {
+                margin-bottom: 10px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+            }
+            .song h3, .song p {
+            display: block;
+            margin-left: 10px;
+            }
+            .song:hover {
+                color: rgb(0, 144, 48);
+            }
+            #musicPlayer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                height: 80px;
+                background-color: #f0f0f0;
+                box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+                border-radius: 20px 20px 0 0;
+                padding: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            #musicPlayer img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+            }
+            #musicPlayer div {
+                flex-grow: 1;
+                margin-left: 20px;
+            }
+            #musicPlayer button {
+                margin-right: 20px;
+            }
+            #musicInfo {
+                width: 300px;
+                height: calc(620px); 
+                padding: 20px;
+                background-color: #fff;
+                box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+                border-radius: 20px;
+                margin-left: 10px;
+                margin-top: 20px;
+                padding-left: 20px;
+                align-items: center;
+                overflow-y: auto;
+
+            }
+            #musicInfo img {
+                width: 300px;
+                object-fit: cover;
+                border-radius: 10px;
+                box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+            }
+            #musicInfo h3, #musicInfo p {
+                margin-left: 9px;
+            }
+
+        }
+    </style>
+    
+</head>
+<body>
+    <button id="homeButton" onclick="location.href='index.html'">Home</button>
+    <div id="genreMenu">
+        <h2>Genres</h2>
+        <div class="genre" onclick="showPlaylist('Mesopotamian Music')">
+            <img src="meso.jpg" alt="meso">
+            <p>Mesopotamian Music</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Egyptian Music')">
+            <img src="egyptian.jpg" alt="meso">
+            <p>Egyptian Music</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Greek Music')">
+            <img src="greek.jpg" alt="meso">
+            <p>Greek Music</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Medieval Music')">
+            <img src="medieval.jpg" alt="PH">
+            <p>Medieval Music</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Renaissance Music')">
+            <img src="renaissance.jpg" alt="PH">
+            <p>Renaissance Music</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Classical Era')">
+            <img src="classical.jpg" alt="PH">
+            <p>Classical Music</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Baroque Era')">
+            <img src="baroque.jpg" alt="PH">
+            <p>Baroque Music</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Romantic Era')">
+            <img src="romantic.jpg" alt="PH">
+            <p>Romantic Music</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Rock')">
+            <img src="rock.jpg" alt="Rock">
+            <p>Rock</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Pop')">
+            <img src="pop.jpg" alt="Pop">
+            <p>Pop</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Jazz')">
+            <img src="jazz.jpg" alt="PH">
+            <p>Jazz</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Electronic Music')">
+            <img src="elec.jpg" alt="PH">
+            <p>Electronic Music</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('Philippine Music')">
+            <img src="filipinomusic.jpg" alt="PH">
+            <p>Philippine Music</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('OPM')">
+            <img src="opm.jpg" alt="OPM">
+            <p>OPM</p>
+        </div>
+        <div class="genre" onclick="showPlaylist('')">
+            <img src="" alt="">
+            <p></p>
+        </div>
+                
+    </div>
+
+    <div id="content">
+        <div id="playlist">
+        </div>
+        <div id="musicInfo">
+        </div>
+
+    </div>
+   
+    <div id="musicPlayer">
+        <img id="song-image" alt="Song">
+        <div>
+            <h3 id="song-title">Song Title</h3> 
+            <p id="song-artist">Artist Name</p>
+        </div>
+        <div id="music-controls">
+            <button class="control-btn" id="prev-song">
+                <i class="fas fa-step-backward"></i>
+            </button>
+            <button class="control-btn" id="play-pause">
+                <i class="fas fa-play"></i> 
+            </button>
+            <button class="control-btn" id="next-song">
+                <i class="fas fa-step-forward"></i>
+            </button>
+            <button class="control-btn" id="repeat-song">
+                <i class="fas fa-redo"></i>
+            </button>
+            <button class="control-btn" id="random-song">
+                <i class="fas fa-random"></i>
+            </button>
+            <input type="range" id="seek-slider" class="slider" min="0" max="100" step="1" value="0">
+            <input type="range" id="volume-slider" class="slider" min="0" max="100" step="1" value="100">
+        </div> 
+        <div id="song-time">
+            <span id="curr_time">00:00</span> / <span id="total_duration">00:00</span>
+        </div>       
+    </div>
+
+    <script>
+        var genres = {
+            'Rock': {
+                'image': 'rock.jpg',
+                'description': 'Rock music, a dominant force of the 20th century, underwent significant evolution. Emerging from a fusion of blues, country, and rhythm and blues in the 1950s, pioneers like Elvis Presley and Chuck Berry brought guitar-driven sounds to the forefront. The 1960s saw the British Invasion with bands like The Beatles and The Rolling Stones, while psychedelic rock emerged with artists like Jimi Hendrix. In the 1970s, hard rock and heavy metal dominated with bands like Led Zeppelin, alongside the emergence of punk rock with The Ramones and The Sex Pistols. The 1980s brought new wave and synthpop, as well as arena rock and glam metal. The 1990s witnessed the rise of grunge with Nirvana and Pearl Jam, and alternative rock with Radiohead. In the 2000s to the present, indie rock gained prominence alongside digital influences, reshaping the genres landscape. Rock musics evolution reflects changing cultural trends while maintaining its core energy and rebellious spirit.',
+                'songs': [
+                    {
+                            'music': 'music/1.mp3',
+                            'title': 'Bohemian Rhapsody', 
+                            'artist': 'Queen', 
+                            'image': 'bohemian_rhapsody.jpg',
+                            'album': 'A Night at the Opera',
+                            'description': 'Bohemian Rhapsody is a song by the British rock band Queen, released as the lead single from their fourth studio album, A Night at the Opera (1975). Written by lead singer Freddie Mercury, the song is a six-minute suite, notable for its lack of a refraining chorus and consisting of several sections: an intro, a ballad segment, an operatic passage, a hard rock part and a reflective coda.',
+                            'artistBio': 'Queen are a British rock band formed in London in 1970 by Freddie Mercury (lead vocals, piano), Brian May (guitar, vocals), and Roger Taylor (drums, vocals), later joined by John Deacon (bass).'
+                    },
+                    {
+                            'music': 'music/2.mp3',
+                            'title': 'Stairway to Heaven', 
+                            'artist': 'Led Zeppelin', 
+                            'image': 'stairway_to_heaven.jpg',
+                            'album' : 'Led Zeppelin IV',
+                            'description' : "“Stairway to Heaven” is a song by the English rock band Led Zeppelin, released on November 8, 1971, as part of their untitled fourth studio album (commonly known as Led Zeppelin IV). Composed by the band’s guitarist Jimmy Page with lyrics written by lead singer Robert Plant, it is widely regarded as one of the greatest rock songs of all time. The song has three distinct sections, each progressively increasing in tempo and volume. It begins with acoustic instruments (guitar and recorders), transitions to electric instruments, and culminates in an uptempo hard rock arrangement featuring Page’s iconic guitar solo and Plant’s vocals.",
+                            'artistBio' : "Led Zeppelin, formed in London in 1968, is an iconic English rock band. Comprising vocalist Robert Plant, guitarist Jimmy Page, bassist and keyboardist John Paul Jones, and drummer John Bonham, they pioneered hard rock and heavy metal.",
+                    },
+                    {
+                        'music' : 'music/teen.mp3',
+                        'title': 'Smells Like Teen Spirit', 
+                        'artist': 'Nirvana', 
+                        'image': 'teen.jpg',
+                        'album' : 'Nevermind',
+                        'description' : "It is the opening track and lead single from the band’s second album, Nevermind (1991), released on DGC Records. The unexpected success of the song propelled Nevermind to the top of several album charts at the start of 1992, marking the point when grunge entered the mainstream. It was Nirvana’s biggest hit, charting high on music industry charts around the world in 1991 and 1992, and was number one on the charts in Belgium, France, New Zealand, and Spain. The song is often described as an “anthem for apathetic kids” of Generation X, and its music video, inspired by a high school pep rally, became iconic.",
+                        'artistBio' : "Nirvana was an American rock band formed by lead singer and guitarist Kurt Cobain and bassist Krist Novoselic in Aberdeen, Washington, in 1987. The band went through several drummers, with the longest-lasting and best-known being Dave Grohl, who joined in 1990. Their breakthrough album, Nevermind (1991), introduced the grunge musical style and gave voice to the post-baby boom young adults known as Generation X."
+                    },
+                ]
+            },
+            'Pop': {
+                'image': 'pop.jpg',
+                'description': "Pop music, a dominant force of the 20th century and beyond, has seen significant evolution. Rooted in rock and roll, it gained traction in the 1950s with artists like Elvis Presley, later evolving with The Beatles' British Invasion in the 1960s. The disco era of the 1970s and the synthpop sound of the 1980s brought new flavors to pop music. The 1990s saw the rise of boy bands and girl groups, while the 2000s witnessed a fusion of pop and rock elements. In the digital era, artists like Beyoncé and Taylor Swift have reached global audiences instantly, reflecting contemporary trends such as genre blending and globalization. Pop music's enduring appeal lies in its ability to adapt to changing cultural landscapes while maintaining its catchy melodies and relatable lyrics.",
+                'songs': [
+                    {
+                        'music' : 'music/thriller.mp3',
+                        'title': 'Thriller', 
+                        'artist': 'Michael Jackson', 
+                        'image': 'thriller.jpg',
+                        'album' : 'Off the Wall',
+                        'description' : "“Thriller” is an iconic pop song by Michael Jackson that is highlighted by a storyline resembling a horror movie. The lyrics take the listener on a journey through a night filled with “evil lurking in the dark” and “creatures crawling in search of blood.” The track captures the exhilarating fear that comes from thrilling situations, like watching a horror movie or facing uncertainties in life. With its catchy beat and theatrical elements, “Thriller” remains a timeless classic.",
+                        'artistBio' : "Born in Gary, Indiana, Michael Jackson became the lead singer of The Jackson 5, a family group formed by his father. Their hits on the Motown label included “I Want You Back” and “ABC.” However, it was as a solo performer that Jackson truly soared. His album Thriller, released in 1982, became the best-selling album of all time. Hits like “Billie Jean,” “Beat It,” and the legendary title track “Thriller” solidified his status as a musical legend."
+                    },
+                    {
+                        'music' : 'music/uptown.mp3',
+                        'title': 'Uptown Funk', 
+                        'artist': 'Mark Ronson ft. Bruno Mars', 
+                        'image': 'uptown.jpg',
+                        'album' : 'Uptown Special',
+                        'description' : "“Uptown Funk” is a lively and energetic track that has become a favorite for many music lovers. It’s a celebration of self-confidence, swagger, and the joy of letting loose. The song captures the essence of having a good time and not taking life too seriously.",
+                        'artistBio' : "Mark Ronson was born on September 4, 1975, in St. John’s Wood, London, England. He is a British-American musician, DJ, record producer, songwriter, and composer. Ronson has won eight Grammy Awards, including Producer of the Year for Amy Winehouse’s album Back to Black (2006). He is also known for his hit single “Uptown Funk” (featuring Bruno Mars) and his work on the soundtrack for the film A Star Is Born (2018), co-writing the award-winning song “Shallow” performed by Lady Gaga and Bradley Cooper. Ronson’s musical journey spans genres like electronic, funk, pop, disco, soul, hip-hop, and pop rock."
+                    },
+                    {
+                        'music' : 'music/party.mp3',
+                        'title': 'Party in the U.S.A', 
+                        'artist': 'Miley Cyrus', 
+                        'image': 'party.jpg',
+                        'album' : 'The Time of Our lives',
+                        'description' : "“Party in the U.S.A.” is a song by American singer Miley Cyrus from her debut extended play (EP) The Time of Our Lives (2009). It was released on August 4, 2009, by Hollywood Records as the lead single from the project. The song was written and produced by Dr. Luke, with additional songwriting provided by Jessie J and Claude Kelly",
+                        'artistBio' : "Miley Cyrus, born on November 23, 1992, in Franklin, Tennessee, U.S., is an American singer, songwriter, and actress. She gained widespread fame through her role in the television show Hannah Montana (2006–2011) and its related soundtrack albums. Transitioning from a teen star to a pop music solo artist, she released albums such as Breakout (2008), which paved the way for Grammy-nominated works like Bangerz (2013) and Endless Summer Vacation (2023)."
+                    },
+                    {
+                        'music' : 'music/illit.mp3',
+                        'title': 'Magnetic', 
+                        'artist': 'Illit', 
+                        'image': 'illit.jpg',
+                        'album' : 'SUPER REAL ME',
+                        'description' : '"Magnetic" was primarily written and produced by Slow Rabbit, Bang Si-hyuk, and Martin, with Salem Ilese, Danke, Vincenzo, Lee Yi-jin, Sophie Leigh McBurnie, Lauren Amber Aquilina, Marcus Andersson, Kim Kiwi, Oh Hyun-seon (Lalala Studio), and James participating in the writing. Described as a dance song with elements of pluggnb and house genre, it is characterized by "arpeggio synths and dynamic bass", with lyrics about "comparing the heart that runs at full speed towards the person likes to a magnet". "Magnetic" was composed in the key of F-sharp major, with a tempo of 131 beats per minute.',
+                        'artistBio' : "Illit is a South Korean girl group formed by Belift Lab, a sub-label of Hybe through the JTBC 2023 survival competition show R U Next?. The group consists of five members – Yunah, Minju, Moka, Wonhee, and Iroha. They debuted on March 25, 2024, with the extended play (EP) Super Real Me."
+                    },
+
+
+                ]
+            },
+            'Jazz' : {
+                'image' : 'jazz.jpg',
+                'description' : "Jazz music evolved significantly in the 20th century. Originating in New Orleans from African American traditions, it blended blues and ragtime. Louis Armstrong revolutionized jazz with his trumpet playing. The 1920s Jazz Age made it mainstream, leading to the Swing Era in the 1930s with big bands like Duke Ellingtons. In the 1940s, Bebop emerged with fast tempos and complex improvisation, led by Charlie Parker. The 1950s brought Cool Jazz's relaxed sounds with Miles Davis, and Hard Bop, combining blues and gospel. The 1960s saw Modal Jazz, like Davis's 'Kind of Blue', and Free Jazz with Ornette Coleman’s free improvisation. The 1970s introduced Jazz Fusion, blending jazz with rock and funk. The 1980s saw a Neo-Bop revival, led by Wynton Marsalis. Contemporary jazz incorporates world music, electronic music, and hip-hop, with artists like Kamasi Washington. Jazz's global influence endures, continually blending genres and innovating.",
+                'songs' : [
+                    {
+                        'music' : 'music/blue.mp3',
+                        'title': 'Blue in Green',
+                        'artist': 'Miles Davis', 
+                        'image': 'blue.jpg',
+                        'album': 'Kind of Blue',
+                        'description' : '“Blue in Green” is the third track on Miles Davis’ 1959 album “Kind of Blue”. This album, considered one of the greatest jazz recordings of all time, features a stellar ensemble including John Coltrane, Bill Evans, Paul Chambers, and Jimmy Cobb. The melody of “Blue in Green” is modal, incorporating Dorian, Mixolydian, and Lydian modes',
+                        'artistBio' : "Miles Davis, born Miles Dewey Davis III on May 26, 1926, in Alton, Illinois, U.S., was an American jazz musician and a great trumpeter. His influence as a bandleader and composer left an indelible mark on the art form. Alongside Louis Armstrong, Duke Ellington, and Charlie Parker, he is regarded as one of the four most important and influential musicians in jazz history."
+                    },
+                    {
+                        'music' : 'music/five.mp3',
+                        'title': 'Take Five ',
+                        'artist': 'Dave Brubeck Quartet', 
+                        'image': 'five.jpg',
+                        'album': 'Time Out.',
+                        'description' : '“Take Five” stands out for its distinctive, catchy saxophone melody and its use of an unusual 5/4 meter (quintuple time signature). The name of the track is derived from its meter. Written in E♭ minor, it follows a ternary (ABA) form. Released as a promotional single in September 1959, it became a sleeper hit in 1961 and went on to become the biggest-selling jazz single of all time',
+                        'artistBio' : "Dave Brubeck (born December 6, 1920, in Concord, California, U.S.) was a popular American jazz pianist. He brought elements of classical music into jazz and epitomized the style of the “West Coast movement.” Brubeck studied music at the College of the Pacific and formed and led a 12-piece orchestra during his college years. After World War II, he studied composition under Darius Milhaud and Arnold Schoenberg. Brubeck’s quartet, featuring Paul Desmond on alto saxophone, gained national fame with their innovative approach to jazz. His contributions to cool jazz and his collaborations with Desmond left an indelible mark on the genre. Dave Brubeck’s legacy continues to inspire jazz enthusiasts worldwide"
+                    },
+                    {
+                        'music' : 'music/rose.mp3',
+                        'title': 'La vie en rose',
+                        'artist': 'Louis Armstrong', 
+                        'image': 'rose.jpg',
+                        'album': 'All Time Greatest Hits',
+                        'description' : 'The song encapsulates feelings of pure bliss, where everything appears rosy and filled with love. Armstrong’s rendition is heartfelt, expressing profound love for his sweetheart. When they’re together, “roses bloom,” and her words become enchanting love songs',
+                        'artistBio' : "Louis Armstrong (1901–1971) was a legendary jazz musician, trumpeter, bandleader, singer, film star, and comedian. Born in New Orleans, Louisiana, he grew up in dire poverty when jazz was still young. As a child, he worked odd jobs and sang in a boys’ quartet. In his teens, he learned music by listening to pioneers like King Oliver. Armstrong’s breakthrough came when he joined King Oliver’s Creole Jazz Band in Chicago. His ingenious ensemble lead, solos, and duets with Oliver made him popular. Armstrong’s solo career flourished, and he became an influential artist in jazz history"
+                    },
+                ]
+            },
+            'Electronic Music' : {
+                'image' : 'elec.jpg',
+                'description' : "Electronic music, a transformative force in 20th-century music and beyond, has seen remarkable developments. Emerging in the mid-20th century, pioneers like Karlheinz Stockhausen and Pierre Schaeffer experimented with tape manipulation and electronic sounds. The invention of synthesizers in the 1960s revolutionized electronic music, popularized by artists like Wendy Carlos and Kraftwerk. The disco era of the 1970s embraced electronic elements, while the 1980s saw the rise of synthpop with bands like Depeche Mode. In the 1990s, techno and house music emerged, with DJs like Juan Atkins and Frankie Knuckles pioneering EDM culture. Contemporary electronic music encompasses diverse subgenres such as dubstep and future bass, with artists like Skrillex and Flume pushing boundaries and exploring new sonic landscapes. Technological advances like digital production tools and live performance innovations have democratized music production and enhanced live experiences. Electronic music continues to evolve, reflecting cultural shifts and technological advancements, while pushing boundaries and redefining the possibilities of music.",
+                'songs' : [
+                    {
+                        'music' : 'music/oxy.mp3',
+                        'title': 'Oxygène" ',
+                        'artist': 'Jean-Michel Jarre', 
+                        'image': 'oxy.jpg',
+                        'album': '',
+                        'description' : '“Blue in Green” is the third track on Miles Davis’ 1959 album “Kind of Blue”. This album, considered one of the greatest jazz recordings of all time, features a stellar ensemble including John Coltrane, Bill Evans, Paul Chambers, and Jimmy Cobb. The melody of “Blue in Green” is modal, incorporating Dorian, Mixolydian, and Lydian modes',
+                        'artistBio' : "Miles Davis, born Miles Dewey Davis III on May 26, 1926, in Alton, Illinois, U.S., was an American jazz musician and a great trumpeter. His influence as a bandleader and composer left an indelible mark on the art form. Alongside Louis Armstrong, Duke Ellington, and Charlie Parker, he is regarded as one of the four most important and influential musicians in jazz history."
+                    },
+                    {
+                        'music' : 'music/clar.mp3',
+                        'title': 'Clarity',
+                        'artist': 'Zedd ', 
+                        'image': 'clar.jpg',
+                        'album': '',
+                        'description' : '“Take Five” stands out for its distinctive, catchy saxophone melody and its use of an unusual 5/4 meter (quintuple time signature). The name of the track is derived from its meter. Written in E♭ minor, it follows a ternary (ABA) form. Released as a promotional single in September 1959, it became a sleeper hit in 1961 and went on to become the biggest-selling jazz single of all time',
+                        'artistBio' : "Dave Brubeck (born December 6, 1920, in Concord, California, U.S.) was a popular American jazz pianist. He brought elements of classical music into jazz and epitomized the style of the “West Coast movement.” Brubeck studied music at the College of the Pacific and formed and led a 12-piece orchestra during his college years. After World War II, he studied composition under Darius Milhaud and Arnold Schoenberg. Brubeck’s quartet, featuring Paul Desmond on alto saxophone, gained national fame with their innovative approach to jazz. His contributions to cool jazz and his collaborations with Desmond left an indelible mark on the genre. Dave Brubeck’s legacy continues to inspire jazz enthusiasts worldwide"
+                    },
+                    {
+                        'music' : 'music/radio.mp3',
+                        'title': 'Radio Ga Ga',
+                        'artist': 'Queen', 
+                        'image': 'radio.jpg',
+                        'album': 'All Time Greatest Hits',
+                        'description' : 'The song encapsulates feelings of pure bliss, where everything appears rosy and filled with love. Armstrong’s rendition is heartfelt, expressing profound love for his sweetheart. When they’re together, “roses bloom,” and her words become enchanting love songs',
+                        'artistBio' : "Louis Armstrong (1901–1971) was a legendary jazz musician, trumpeter, bandleader, singer, film star, and comedian. Born in New Orleans, Louisiana, he grew up in dire poverty when jazz was still young. As a child, he worked odd jobs and sang in a boys’ quartet. In his teens, he learned music by listening to pioneers like King Oliver. Armstrong’s breakthrough came when he joined King Oliver’s Creole Jazz Band in Chicago. His ingenious ensemble lead, solos, and duets with Oliver made him popular. Armstrong’s solo career flourished, and he became an influential artist in jazz history"
+                    },
+                ]
+            },
+            'Philippine Music': {
+                'image': 'filipinomusic.jpg',
+                'description': 'Philippine music has a rich and diverse history, shaped by a multitude of cultural influences over centuries. Pre-colonial music was primarily ritualistic and functional, deeply intertwined with the daily lives and spiritual practices of indigenous tribes. Instruments like the kulintang (a set of gongs) and the kudyapi (a type of lute) were central to these traditions.\nThe arrival of Spanish colonizers in the 16th century brought Western musical forms and instruments. Religious music became prominent, with church hymns and liturgical music playing a significant role. The introduction of the guitar and other Western instruments led to the development of new genres and styles.\nIn the 19th and early 20th centuries, American colonization further influenced Philippine music, integrating jazz, blues, and later rock and roll. This period also saw the rise of the kundiman and harana, traditional Filipino serenades that combined native and Western elements.',
+                'songs': [
+                ]
+            },
+            'OPM': {
+                'image': 'opm.jpg',
+                'description': 'OPM, or Original Pilipino Music, refers to popular music composed and performed by Filipino artists. Emerging in the 1970s, OPM is characterized by its blend of Filipino and Western musical styles, sung in both Filipino and English. It encompasses various genres, including rock, pop, hip-hop, and ballads.Prominent OPM artists include Ryan Cayabyab, known for his contributions to choral and contemporary music, and bands like Eraserheads and Rivermaya, which defined the 1990s alternative rock scene. OPM continues to evolve, with artists like Ben&Ben and Moira Dela Torre bringing fresh sounds to the industry.',
+                'songs': [
+                    {
+                        'music' : 'music/pilipinas.mp3',
+                        'title': 'Piliin ang Pilipinas',
+                        'artist': 'Angeline Quinto', 
+                        'image': 'pilipinas.png',
+                        'album': 'Piliin ang Pilipinas',
+                        'description' : '“Piliin mo ang Pilipinas” is one of the famous song that Angeline Quinto sung.In this song, it promotes to choose Philippines as your vacation place or place where you can be comfortable with. It describe a lot of things about the philippines, which is true? It shows in this song how beautiful the philippines was.As you watch the music video of “Piliin mo ang Pilipinas” , you will see a lot of beautiful places in the philippines not just a beautiful places but also the beautiful ang handsome faces of filipinos.',
+                        'artistBio' : "Angeline Quinto (born November 26, 1989) is a Filipino singer, actress, and television personality. Known for her vocal range and soulful singing style, Quinto's music has garnered critical praise for its lyrical content and themes of love, heartbreak, and empowerment. It has been featured in the soundtracks of films and television series in the Philippines."
+                    },
+                        
+                    {
+                        'music' : 'music/elbimbo.mp3',
+                        'title': 'Ang Huling El Bimbo',
+                        'artist': 'Eraserheads', 
+                        'image': 'elbimbo.jpg',
+                        'album' : 'Ang Huling El Bimbo',
+                        'description' : '"Ang Huling El Bimbo" is a song composed by Ely Buendia of the Philippine pop/rock band Eraserheads, for their 1995 studio album Cutterpillow. It received extensive airplay after its release and ranked #2 on RX 93.1s Top 20 OPM Requests of 1996. It is the only Tagalog song included in the bands international compilation album, Aloha Milkyway (1998). The songs music video catapulted the bands success outside the Philippines by bagging the International Viewers Choice Awards for Asia at the 1997 MTV Video Music Awards.',
+                        'artistBio' : 'Eraserheads (sometimes stylized as ERASƎRHEADS or ƎRASƎRHƎADS) are a Filipino alternative rock band formed in 1989. With a lineup comprising Ely Buendia, Buddy Zabala, Marcus Adoro, and Raimund Marasigan, they are the most influential and successful Filipino band in Philippine music history. Regarded as "the Beatles of the Philippines", the band have sold 9 million copies of their discography throughout their career.'
+                    },
+                    {
+                        'music' : 'music/pantropiko.mp3',
+                        'title': 'Pantropiko',
+                        'artist': 'BINI', 
+                        'image': 'pantropiko.jpg',
+                        'album' : 'Talaarawan',
+                        'description' : '"Pantropiko" is a song recorded by Filipino girl group Bini. It was released as the second pre-release single of their debut extended play (EP), Talaarawan, on November 17, 2023.',
+                        'artistBio' : "BINI is a Filipino girl group under ABS-CBN's Star Magic that was formed through Star Hunt Academy (SHA), and is composed of eight members: Aiah, Colet, Maloi, Gwen, Stacey, Mikha, Jhoanna, and Sheena. Tagged as the Philippine's Nation's Girl Group, Bini's pre-debut single 'Da Coconut Nut' was released on November 20, 2020.[1][2] Bini officially debuted on June 11, 2021, with their debut single 'Born to Win'."
+                    },
+                        
+                    {
+                        'music' : 'music/tatsulok.mp3',
+                        'title': 'Tatsulok',
+                        'artist': 'Bamboo', 
+                        'image': 'tatsulok.jpg',
+                        'album' : 'We Stand Along Together',
+                        'description' : "'Tatsulok' by Bamboo is a powerful song about unfairness and inequality in our society. It talks about how some people have lots of power and money while others struggle just to get by. The title 'Tatsulok' means triangle in Filipino, and it shows how power and resources are unevenly distributed.",
+                        'artistBio' : 'Francisco Gaudencio Lope Belardo Mañalac, popularly known as Bamboo Mañalac or simply by the mononym Bamboo, is a Filipino musician and singer-songwriter. He began his career as vocalist and original frontman of Rivermaya and later fronted his own band, Bamboo. Bamboo band disbanded in 2011 and Mañalac then pursued a solo career and released his first solo album, No Water, No Moon. \n\nMañalac is known for his distinct vocals, which combines elements of rock with a mellow technique; he also has a notably eccentric style in live performances. His musical and singing style as well as his bands polished sound have made him an icon in the Philippine music industry.'
+                    },
+                    {
+                        'music' : 'music/tingin.mp3',
+                        'title': 'Tingin',
+                        'artist': 'Cup of Joe', 
+                        'image': 'tingin.jpg',
+                        'album' : 'Patutunguhan',
+                        'description' : "The song 'Tingin' by Cup of Joe featuring Janine Teñoso is about a strong attraction towards someone and the desire to focus solely on them amidst a chaotic world. The song depicts the feeling of being captivated by someone's gaze and entranced by their presence, while everything else fades into the background.The lyrics describe the singer's admiration for the person's physical features, particularly their brown skin and the sparkle in their eyes. There is a sense of mystery and enchantment in the way the person looks at the singer, and the singer is willing to follow them wherever they go because of this.",
+                        'artistBio' : 'The Filipino band, Cup of Joe, was formed by six talented lads from Baguio namely vocalists Edgar Gian Bernardino and Raphaell Ridao, pianist Vixen “Xen” Gareza, lead guitarist Antonio Gabriel “Gab” Fernandez, bassist Raphael “Seve” Severino and rhythm guitarist Clint Joules “CJ” Fernandez and almost all of them came from a family with musical backgrounds.The band’s unique name, Cup of Joe, is a slang word for a cup of coffee. And just like coffee, they wanted to produce different blends of music for people to listen to, especially when they need that refreshing boost to get through the day.'
+                    },
+                    {
+                        'music' : 'music/upuan.mp3',
+                        'title': 'Upuan',
+                        'artist': 'Gloc9', 
+                        'image': 'upuan.jpg',
+                        'album' : 'Matrikula',
+                        'description' : "Gloc-9 wrote this song as a calling for those who have the power. The power to turn the lives of the other people into better. Those persons behind those high walls, living in a mansion, riding in a convoy. Those persons who have the position, a position which were given by the people who gave their trust. Being trusted is a privileged but they do not see the essence of being a leader- to lead the country and to improve the life of its people.",
+                        'artistBio' : 'Aristotle Condenuevo Pollisco (born October 18, 1977), known professionally as Gloc-9, is a Filipino rapper, singer, and songwriter. Regarded as one of the best Filipino greatest rappers of all time. his fast-flowing vocal style has made him one of the best-selling and most successful hip-hop artists in the Philippines. He was described by fellow Filipino rapper Francis Magalona as "a blacksmith of words and letters, and a true Filipino poet."'
+                    },
+                    {
+                        'music' : 'music/babaero.mp3',
+                        'title': 'Babaero',
+                        'artist': 'gin&melodies, Hev Abi', 
+                        'image': 'babero.jpg',
+                        'album' : '',
+                        'description' : "",
+                        'artistBio' : ''
+                    },
+                ]
+            },
+            'Baroque Era' : {
+                'image' : 'baroque.jpg',
+                'description' : 'Baroque music is known for its ornate and elaborate compositions, featuring intricate melodies and harmonies. Composers of this era skillfully employed contrast and drama to evoke a wide range of emotions in their listeners. Polyphony (multiple independent melodic lines) and counterpoint (the art of combining different melodies) were central to Baroque compositions. During this period, opera, oratorio, and concerto forms flourished, providing platforms for grand vocal and instrumental performances. The use of basso continuo (a continuous bass line played by a keyboard instrument and a bass instrument) and terraced dynamics (sudden shifts in volume) added depth and texture to the music. Ornamentation and embellishments, such as trills, turns, and grace notes, were prevalent, showcasing the virtuosity of performers and composers alike',
+                'songs' : [
+                    {
+                        'music': 'music/storm.mp3',
+                        'title': 'Storm',
+                        'artist': 'Antonio Vivaldi',
+                        'image': 'storm.jpg',
+                        'album': 'The Four Seaons',
+                        'description': "Vividly portrays the intensity of a summer storm. In this piece, Vivaldi captures the sweltering heat, the sudden gusts of wind, and the impending tempest. The music alternates between serene moments and dramatic bursts, evoking the shepherd’s fear of violent storms and the raw power of nature",
+                        'artistBio': 'Antonio Vivaldi, born on March 4, 1678, in Venice, Republic of Venice (Italy), and passing away on July 28, 1741, in Vienna, Austria, was an Italian composer and violinist who made significant contributions to the evolution of instrumental music during the late Baroque period. His influence extended to composers like Johann Sebastian Bach, particularly in the concerto form. Vivaldi’s best-known works include his violin concertos, with The Four Seasons standing out as a masterpiece.',
+                    },
+                    {
+                        'music': 'music/AltoGiove.mp3',
+                        'title': 'Alto Giove',
+                        'artist': 'Philippe Jaroussky - Nicola Antonio',
+                        'image': 'alto.jpg',
+                        'album': 'Le concert du 14 juillet',
+                        'description': '“Alto Giove” showcases both Porpora’s artistry and that of his pupil, the renowned castrato singer Farinelli. The lyrical composition demonstrates Porpora’s deep musicality, relying on expressive beauty rather than vocal acrobatics.',
+                        'artistBio': 'Jaroussky’s talent has garnered significant recognition. He received the Révélation Artiste lyrique at the 2004 Victoires de la musique classique and was named Artiste lyrique de l’année in the 2007 and 2010 editions. He has also been honored with Echo Klassik Awards for “The Best Singer of the Year” in 2008 and 2016. In 2020, he received the Victoire d’honneur in the Victoires de la musique classique. Additionally, he was named Chevalier of the Ordre des Arts et des Lettres in 2009 and was later promoted to the rank of Officier in 2019.',
+                    },
+                    {
+                        'music': 'music/Adagio.mp3',
+                        'title': 'Adagio',
+                        'artist': 'Tomaso Albinoni',
+                        'image': 'tomaso.jpg',
+                        'album': '',
+                        'description': '',
+                        'artistBio': '',
+                    },
+                    {
+                        'music': 'music/ConcertoD.mp3',
+                        'title': 'Concerto in D Major Op. 6 No. 4',
+                        'artist': 'Arcangelo Corelli',
+                        'image': 'corelli.jpg',
+                        'album': 'Concerti Grossi Op.6 Nos. 1-6',
+                        'description': '',
+                        'artistBio': '',
+                    }
+                ]
+
+            },
+            'Classical Era' : {
+                'image' : 'classical.jpg',
+                'description' : 'Classical music places a strong emphasis on clarity, balance, and simplicity. Composers of this period sought to create music that was accessible and intelligible to a wide audience. They focused on form and structure, with clear phrasing and symmetrical designs. Notable forms developed during this time include the sonata-allegro form, which became a cornerstone of instrumental music, as well as the symphony and the string quartet. In terms of texture, Classical music favored homophony, where a single melody is supported by harmonies, creating a balanced and harmonious sound. Dynamics played a crucial role, with deliberate contrasts between light and shade, allowing for expressive nuances. Despite this, emotional restraint and clarity of expression remained central to Classical compositions.',
+                'songs' : [
+                    {
+                        'music': 'music/symph4.mp3',
+                        'title': 'Symphony No. 4 in D major',
+                        'artist':'Wolfgang Amadeus Mozart',
+                        'image': 'mozart.jpg',
+                        'album': '',
+                        'description': 'The Symphony No. 4 in D major, K. 19, by Wolfgang Amadeus Mozart was composed in London during the Mozart familys Grand Tour of Europe in 1765, when Mozart was nine years old. An opening unison fanfare introduces a vivacious allegro which is redolent of the bustling city life that the Mozarts were savouring. This is followed by an elegant andante in G major, scored for strings and horns, and the work is rounded off by a lively presto, crammed full with bustling vigour and high spirits.',
+                        'artistBio': 'Wolfgang Amadeus Mozart (27 January 1756 – 5 December 1791) was a prolific and influential composer of the Classical period. Despite his short life, his rapid pace of composition resulted in more than 800 works representing virtually every Western classical genre of his time. Many of these compositions are acknowledged as pinnacles of the symphonic, concertante, chamber, operatic, and choral repertoire. Mozart is widely regarded as being one of the greatest composers in the history of Western music, with his music admired for its "melodic beauty, its formal elegance and its richness of harmony and texture".',
+                    },
+                    {
+                        'music': 'music/symph5.mp3',
+                        'title': 'Symphony No. 5, First movement ',
+                        'artist': 'Ludwig Van Beethhoven',
+                        'image': 'beet.jpg',
+                        'album': '',
+                        'description': "Throughout the symphony's sonata-form first movement, “Allegro con brio,” the core motif takes on various characters—sometimes foreboding, sometimes triumphant—as it migrates from one section of the orchestra to another, shifts to different pitch centres, and sounds at different dynamic levels.",
+                        'artistBio': "Born in Bonn, Beethoven displayed his musical talent at a young age. He was initially taught intensively by his father, Johann van Beethoven, and later by Christian Gottlob Neefe. Under Neefe's tutelage in 1783, he published his first work, a set of keyboard variations. He found relief from a dysfunctional home life with the family of Helene von Breuning, whose children he loved, befriended, and taught piano. At age 21, he moved to Vienna, which subsequently became his base, and studied composition with Haydn. Beethoven then gained a reputation as a virtuoso pianist, and was soon patronised by Karl Alois, Prince Lichnowsky for compositions, which resulted in his three Opus 1 piano trios (the earliest works to which he accorded an opus number) in 1795",
+                    },
+                    {
+                        'music': 'music/symph94.mp3 ',
+                        'title': 'Symphony No. 94 in G Major Second Movement',
+                        'artist': 'Franz Joseph Haydn',
+                        'image': 'haydn.jpg',
+                        'album': '',
+                        'description': 'The Andante theme of the second movement, of nursery tune simplicity, is presented by the strings softly, repeated by them even more softly, and then punctuated by The Chord. (Surprise!) The four ensuing variations on the theme are so seemingly simple they require no description.',
+                        'artistBio': "Franz Joseph Haydn was an Austrian composer of the Classical period. He was instrumental in the development of chamber music such as the string quartet and piano trio. His contributions to musical form have led him to be called 'Father of the Symphony' and 'Father of the String quartet'. Haydn spent much of his career as a court musician for the wealthy Esterházy family at their Eszterháza Castle. Until the later part of his life, this isolated him from other composers and trends in music so that he was, as he put it, 'forced to become original'. Yet his music circulated widely, and for much of his career he was the most celebrated composer in Europe.",
+                    }
+                ]
+
+            },
+            'Romantic Era' : {
+                'image' : 'romantic.jpg',
+                'description' : 'Romantic music is characterized by its intense emotional expression, celebrating individualism and passion. Composers of this era expanded existing forms and structures, creating longer and more complex compositions. They embraced chromatic harmonies, resulting in rich and colorful orchestration. Programmatic elements—where music tells a story or evokes specific imagery—became popular, allowing composers to explore themes ranging from nationalistic pride to exotic landscapes. Virtuosity and technical prowess were highly valued, with performers showcasing their exceptional skills. The music of the Romantic period is marked by heightened emotional intensity, achieved through dynamic contrasts that sweep listeners into a world of profound feeling.',
+                'songs' : [
+                    {
+                        'music': 'music/symph5.mp3',
+                        'title': 'Symphony No. 5, First movement ',
+                        'artist': 'Ludwig Van Beethhoven',
+                        'image': 'beet.jpg',
+                        'album': '',
+                        'description': "Throughout the symphony's sonata-form first movement, “Allegro con brio,” the core motif takes on various characters—sometimes foreboding, sometimes triumphant—as it migrates from one section of the orchestra to another, shifts to different pitch centres, and sounds at different dynamic levels.",
+                        'artistBio': "Born in Bonn, Beethoven displayed his musical talent at a young age. He was initially taught intensively by his father, Johann van Beethoven, and later by Christian Gottlob Neefe. Under Neefe's tutelage in 1783, he published his first work, a set of keyboard variations. He found relief from a dysfunctional home life with the family of Helene von Breuning, whose children he loved, befriended, and taught piano. At age 21, he moved to Vienna, which subsequently became his base, and studied composition with Haydn. Beethoven then gained a reputation as a virtuoso pianist, and was soon patronised by Karl Alois, Prince Lichnowsky for compositions, which resulted in his three Opus 1 piano trios (the earliest works to which he accorded an opus number) in 1795",
+                    },
+                    {
+                        'music': 'music/nocturne.mp3',
+                        'title': 'Nocturne Op.9 No.2',
+                        'artist': 'Frederic Chopin',
+                        'image': 'chopin.jpg',
+                        'album': '',
+                        'description': "Chopin's Nocturne in E-flat Major, Op. 9, No. 2 is one of his most famous compositions. Written between 1830 and 1832 when Chopin was around 20 years old, this piece belongs to a set of three nocturnes dedicated to Maria Pleyel, the wife of an acquaintance of Chopin's. The Nocturne features flowing melodic lyricism, bittersweet harmonies, gentle waltz rhythms, and intense contrasts of dynamics, creating a mood that is both melancholy and nostalgic.",
+                        'artistBio': "Frédéric Chopin, born on March 1, 1810 in Żelazowa Wola (near Warsaw, Duchy of Warsaw, now in Poland), was a Polish-French composer and pianist of the Romantic period. Despite writing primarily for the piano, Chopin’s compositions showcase his superfine imagination and fastidious craftsmanship. His solo piano works and piano concerti remain some of the most celebrated pieces in classical music. At an early age, Chopin displayed remarkable talent and sensitivity to music, and he became renowned for his expressive and virtuosic piano compositions. He moved to Paris in 1832, where he socialized with high society and established himself as an excellent piano teacher. His legacy endures through his emotionally rich and technically brilliant music, which continues to captivate audiences worldwide",
+                    },
+                    {
+                        'music': 'music/serenade.mp3',
+                        'title': 'Serenade',
+                        'artist': 'Franz Schubert',
+                        'image': 'schubert.jpg',
+                        'album': '',
+                        'description': "Franz Schubert’s “Serenade”, also known as “Ständchen,” is a beautiful and timeless composition written in 1826. The melody flows gently, capturing a wistful and romantic mood. In the song, a man bids his partner goodnight, expressing his hope that she will be protected by angels as she sleeps. He compares her to a precious treasure and asks her to dream of him while the moon shines upon her12. The piece is characterized by its absolute perfection of finish and enduring grace and beauty",
+                        'artistBio': "Franz Schubert, born on January 31, 1797, in Himmelpfortgrund (near Vienna, Austria), was an Austrian composer who bridged the worlds of Classical and Romantic music. His compositions are noted for their beautiful melodies and harmonies, particularly in his songs (lieder) and chamber music. Some of his notable works include Symphony No. 9 in C Major (“The Great”), Symphony in B Minor (Unfinished), masses, and piano pieces.",
+                    },
+                ]
+            },
+            'Medieval Music' : {
+                'image' : 'medieval.jpg',
+                'description' : 'Originating around the 9th century, Gregorian chant was a form of plainchant used in the Roman Catholic Church. It was monophonic, unaccompanied vocal music that set Latin texts to music. The chants were named after Pope Gregory I, who is traditionally credited with organizing the chant repertoire. By the 12th century, composers began to experiment with polyphony, which involved multiple independent melody lines sung or played simultaneously. This marked a significant shift from the monophonic texture of earlier music.',
+                'songs' : [
+                    {
+                        'music': 'music/omnes.mp3',
+                        'title': 'Viderunt Omnes',
+                        'artist': 'Perotin',
+                        'image': 'omnes.jpg',
+                        'album': '',
+                        'description': '“Viderunt Omnes” is a Gregorian chant based on Psalm 98:2–4. Sung as the gradual at the Masses of Christmas Day and historically on its octave, the Feast of the Circumcision, it holds symbolic significance. Notably, it features early polyphony by known composers, including Léonin and Pérotin of the Notre Dame school.',
+                        'artistBio': "",
+                    },
+                    {
+                        'music': 'music/mover.mp3',
+                        'title': 'Can Vei La Lauzeta Mover',
+                        'artist': 'Bernart de Ventadorn',
+                        'image': 'mover.jpg',
+                        'album': '',
+                        'description': '“Can vei la lauzeta mover” is a song written in the Occitan language by Bernart de Ventadorn, a 12th-century troubadour. It is among both the oldest and best known of the troubadour songs. The lyrics describe a lark flying joyfully into the sun, while the speaker, unable to share that joy due to unrequited love, compares himself to Narcissus and Tristan.',
+                        'artistBio': "Bernart de Ventadorn (born before 1152, Limousin province, Aquitaine [now in France]—died 1195, Dalon) was a Provençal troubadour whose poetry is considered the finest in the Provençal language. He traveled to England in 1152–55 and lived at the court of Eleanor of Aquitaine. Later in life, he retired to the abbey of Dalon. Bernart’s short love lyrics, along with his own composed music, showcase emotional power combined with lyric delicacy and simplicity.",
+                    },
+                    {
+                        'music': 'music/dame.mp3',
+                        'title': 'Messe de Nostre Dame',
+                        'artist': 'Guillaume de Machaut',
+                        'image': 'dame.jpg',
+                        'album': '',
+                        'description': '“Messe de Nostre Dame” is a unified mass composed by Guillaume de Machaut before 1365. It includes the five sections of the Mass Ordinary: Kyrie, Gloria, Credo, Sanctus, Agnus, and the dismissal, Ite Missa Est. Notably, Machaut selected relevant chants for each section, creating the earliest unified set of Mass Ordinary movements.',
+                        'artistBio': "Guillaume de Machaut (born around 1300 in Machault, France—died 1377 in Reims) was a French poet and musician. He is greatly admired for his mastery of French versification and is regarded as one of the leading composers of the Ars Nova musical style in the 14th century. His legacy rests on both his shorter poems and his musical compositions, making him a significant figure in medieval poetry and music.",
+                    },
+
+                ]
+
+            },
+            'Renaissance Music' : {
+                'image' : 'renaissance.jpg',
+                'description' : 'The Renaissance was characterized by a revival of interest in the arts, sciences, and the study of classical antiquity. Humanism, which emphasized human potential and achievements, profoundly influenced music, encouraging more expressive and emotional compositions. Renaissance music saw the maturation of polyphony, where multiple independent melody lines are interwoven. Composers perfected techniques such as imitation and counterpoint, enriching the musical texture.',
+                'songs' : [
+                    {
+                        'music': 'music/maria.mp3',
+                        'title': 'Ave Maria... virgo serena',
+                        'artist': 'Josquin des Prez',
+                        'image': 'maria.jpg',
+                        'album': '',
+                        'description': '“Ave Maria … virgo serena” is a motet composed by Josquin des Prez. It is regarded as Josquin’s most famous motet and one of the most famous pieces of the 15th century. The piece rose to extreme popularity in the 16th century, even appearing at the head of the first volume of motets ever printed. The opening lines set the tone for the entire composition: “Ave Maria, gratia plena, Dominus tecum, Virgo serena” (Hail Mary, full of grace, the Lord is with thee, serene Virgin) These words hold a deep spiritual meaning, invoking a sense of reverence and awe.',
+                        'artistBio': "Josquin des Prez, also known as Josquin Després, was a French-Flemish composer born around 1450 in Condé-sur-l’Escaut, which was part of Burgundian Hainaut (now in France). He is considered one of the greatest composers of the Renaissance and had a profound influence on the music of 16th-century Europe.",
+                    },
+                    {
+                        'music': 'music/missa.mp3',
+                        'title': 'Missa Papae Marcelli',
+                        'artist': 'Palestrina',
+                        'image': 'missa.jpg',
+                        'album': '',
+                        'description': '“Missa Papae Marcelli” by Giovanni Pierluigi da Palestrina is a renowned Renaissance mass. Composed in honor of Pope Marcellus II, it exemplifies intricate polyphony and addresses concerns about intelligibility during the Council of Trent. Palestrina’s genius shines through this timeless choral masterpiece.',
+                        'artistBio': "Giovanni Pierluigi da Palestrina (c. 1525–1594) was an Italian composer of late Renaissance music. As a master of contrapuntal composition, he created over 105 masses and 250 motets. His works, noted for their variety of form and type, remain influential in the world of sacred music.",
+                    },
+                    {
+                        'music': 'music/vesta.mp3',
+                        'title': 'As Vesta Was from Latmos Hill Descending',
+                        'artist': 'Thomas Weelkes',
+                        'image': 'vesta.jpg',
+                        'album': '',
+                        'description': '“As Vesta was from Latmos hill descending” is a beautiful Renaissance madrigal composed by Thomas Weelkes. It appears in the album “The Triumphs of Oriana” (1601). The lyrics depict the Roman goddess Vesta descending from a hill, encountering a maiden queen, and celebrating the presence of Diana, the goddess of the hunt. The song serves as a tribute to Queen Elizabeth I, often referred to as “Oriana,” and embodies the spirit of praise and devotion during the Elizabethan era.',
+                        'artistBio': "Thomas Weelkes (baptized October 25, 1576, Elsted, Sussex, England—died November 30, 1623, London) was an English organist and composer, renowned for his contributions to madrigal music. His nearly 100 surviving madrigals showcase word painting, lively rhythms, and a highly developed sense of form and structure. Weelkes’s compositions also include sacred music, instrumental works, and expressive anthems.",
+                    },
+                    
+                ]
+
+            },
+            'Mesopotamian Music' : {
+                'image' : 'meso.jpg',
+                'description' : 'The Sumerians, Babylonians, and Assyrians had a rich musical tradition, with evidence of instruments like the lyre and harp, as well as written musical notations on clay tablets. ',
+                'songs' : [
+                    {
+                        'music': 'music/hurrian.mp3',
+                        'title': 'Hurrian Hymn No. 6',
+                        'artist': 'Mesopotamians',
+                        'image': 'hurrian.jpg',
+                        'album': '',
+                        'description': 'the "Hurrian Hymn No. 6," which dates back to around 1400 BCE. This hymn was discovered in Ugarit, an ancient city in modern-day Syria. Although the lyrics are in the Hurrian language, the musical notation is in cuneiform and can be interpreted and performed. Its typically played on a lyre or a similar stringed instrument.',
+                        'artistBio': "",
+                    },
+                    {
+                        'music': 'music/nikkal.mp3',
+                        'title': 'Babylonian Hymn to Nikkal ',
+                        'artist': 'Mesopotamians',
+                        'image': 'blonian.jpeg',
+                        'album': '',
+                        'description': 'the "Babylonian Hymn to Nikkal," a religious hymn dedicated to the goddess Nikkal. The music for this hymn has been reconstructed based on ancient cuneiform tablets. Its typically performed on a lyre or harp, with vocals if the lyrics are known.',
+                        'artistBio': "",
+                    },
+
+                ]
+
+            },
+            'Egyptian Music' : {
+                'image' : 'egyptian.jpg',
+                'description' : 'Music played a significant role in Egyptian society, with evidence of various instruments such as the sistrum, harp, flute, and lyre. Music was intertwined with religious ceremonies, festivals, and even daily life.',
+                'songs' : [
+                    {
+                        'music': 'music/harper.mp3',
+                        'title': 'Song of the Harper',
+                        'artist': 'Egyptians',
+                        'image': 'harper.jpg',
+                        'album': '',
+                        'description': 'This is a famous ancient Egyptian composition found in the tomb of a nobleman named Khety. The piece is inscribed on the walls of the tomb and depicts a harper performing for a banquet. While the exact melody is not known, scholars have reconstructed possible melodies based on the hieroglyphic inscriptions. ',
+                        'artistBio': "",
+                    },
+                    {
+                        'music': 'music/nile.mp3',
+                        'title': 'Hymn to the Nile',
+                        'artist': 'Egyptians',
+                        'image': 'nile.jpg',
+                        'album': '',
+                        'description': "The 'Hymn to the Nile' is a poetic composition celebrating the annual flooding of the Nile River, which was vital for Egypt's agriculture and prosperity. While the music itself is lost, modern composers have created musical settings inspired by ancient Egyptian scales and motifs. ",
+                        'artistBio': "",
+                    },
+                ]
+
+            },
+            'Greek Music' : {
+                'image' : 'greek.jpg',
+                'description' : 'Music was highly valued in ancient Greek society, with a focus on both instrumental and vocal performances. Instruments like the aulos (double flute) and lyre were commonly used, and music was integral to theatrical performances and religious rituals. ',
+                'songs' : [
+                {
+                        'music': 'music/fragment.mp3',
+                        'title': 'Seikilos Epitaph',
+                        'artist': 'Greeks',
+                        'image': 'fragment.jpg',
+                        'album': '',
+                        'description': "The 'Seikilos Epitaph' is one of the few surviving complete musical compositions from ancient Greece. Dating back to the 1st century CE, it's inscribed on a tombstone and includes both lyrics and musical notation. The melody is written in the ancient Greek system of notation and can be performed on various instruments or sung. ",
+                        'artistBio': "",
+                    },
+                ]
+
+            }
+        };
+
+        var index = 0;
+        var isPlaying = false;
+        var updateTimer;
+        var curr_track = new Audio();
+        var random_btn = document.getElementById('random-song');
+        var repeat_btn = document.getElementById('repeat-song');
+        var playpause_track = document.getElementById('play-pause');
+        var next_track = document.getElementById('next-song');
+        var prev_track = document.getElementById('prev-song');
+        var seek_slider = document.getElementById('seek-slider');
+        var volume_slider = document.getElementById('volume-slider');
+        var curr_time = document.getElementById('curr_time');
+        var total_duration = document.getElementById('total_duration');
+
+        function loadTrack(genre, index) {
+            clearInterval(updateTimer);
+            resetValues();
+
+            // Use the audio object and currentSong variable
+            curr_track.src = genres[genre].songs[index].music;
+            curr_track.load();
+
+            document.querySelector('#musicPlayer img').src = genres[genre].songs[index].image;
+            document.querySelector('#musicPlayer h3').textContent = genres[genre].songs[index].title;
+            document.querySelector('#musicPlayer p').textContent = genres[genre].songs[index].artist;
+
+            updateTimer = setInterval(seekUpdate, 1000);
+
+            // Add event listeners for the ended event and the click events of the buttons
+            curr_track.addEventListener("ended", function() { nextTrack(genre); });
+            document.getElementById('play-pause').addEventListener("click", playpauseTrack);
+            document.getElementById('next-song').addEventListener("click", function() { nextTrack(genre); });
+            document.getElementById('prev-song').addEventListener("click", function() { prevTrack(genre); });
+            
+            curr_track.addEventListener("ended", function() { nextTrack(genre); });
+            random_btn.addEventListener("click", randomTrack);
+            repeat_btn.addEventListener("click", repeatTrack);
+            playpause_track.addEventListener("click", playpauseTrack);
+            next_track.addEventListener("click", function() { nextTrack(genre); });
+            prev_track.addEventListener("click", function() { prevTrack(genre); });
+            seek_slider.addEventListener("change", seekTo);
+            volume_slider.addEventListener("change", setVolume);
+        }
+
+        function playpauseTrack() {
+            if (curr_track.paused) {
+                curr_track.play(); // If the song is paused, play it
+            } else {
+                curr_track.pause(); // If the song is playing, pause it
+            }
+        }
+        function nextTrack(genre) {
+            track_index = (track_index + 1) % genres[genre].songs.length; // Move to the next song in the array
+            loadTrack(genre, track_index); // Load the next song
+            curr_track.play(); // Play the song
+        }
+        function prevTrack(genre) {
+            track_index = (track_index - 1 + genres[genre].songs.length) % genres[genre].songs.length; // Move to the previous song in the array
+            loadTrack(genre, track_index); // Load the previous song
+            curr_track.play(); // Play the song
+        }
+
+        function resetValues() {
+            curr_time.textContent = "00:00";
+            total_duration.textContent = "00:00";
+            seek_slider.value = 0;
+        }
+
+        function showPlaylist(genre) {
+            var playlist = document.getElementById('playlist');
+            var genreImage = genres[genre].image;
+            var genreDescription = genres[genre].description;
+            var songs = genres[genre].songs;
+            var playlistHTML = '<div class="genreInfo">' +
+                    '<img src="' + genreImage + '" alt="' + genre + '">' +
+                    '<div>' + // Add a div here
+                    '<h2>' + genre + '</h2>' + // Add the genre name here
+                    '<p>' + genreDescription + '</p>' +
+                    '</div>' + // Close the div here
+                    '</div>';
+
+            songs.forEach(function(song, index) {
+                playlistHTML += '<div class="song" onclick="selectTrack(\'' + genre + '\', ' + index + ')">' +
+                                '<img src="' + song.image + '" alt="' + song.title + '">' +
+                                '<div class="song-info">' + // Add a div for the text content
+                                '<h3>' + song.title + '</h3>' +
+                                '<p>' + song.artist + '</p>' +
+                                '</div>' + // Close the div
+                                '</div>';
+            });
+            playlist.innerHTML = playlistHTML;
+        }
+
+        function selectTrack(genre, index) {
+            track_index = index;
+            showMusicInfo(genre, index);
+            loadTrack(genre, index); // Corrected this line
+            curr_track.play();
+        }
+
+        function clearPlaylist() {
+            var playlist = document.getElementById('playlist');
+            playlist.innerHTML = '';
+        }
+
+        function showMusicInfo(genre, index) {
+            var musicInfo = document.getElementById('musicInfo');
+            var song = genres[genre].songs[index];
+            musicInfo.style.display = 'block';
+            musicInfo.innerHTML = '<img src="' + song.image + '" alt="' + song.title + '">' +
+                                '<h3>' + song.title + '</h3>' +
+                                '<p>Artist: ' + song.artist + '</p>' +
+                                '<p>Album: ' + song.album + '</p>' +
+                                '<p>Description: ' + song.description + '</p>' +
+                                '<p>Artist Bio: ' + song.artistBio + '</p>' +
+                                '<button onclick="hideMusicInfo()">Close</button>';
+        }
+
+        function hideMusicInfo() {
+            var musicInfo = document.getElementById('musicInfo');
+            musicInfo.style.display = 'none';
+        }
+
+        function seekUpdate() {
+            var seekPosition = 0;
+
+            if (!isNaN(curr_track.duration)) {
+                seekPosition = curr_track.currentTime * (100 / curr_track.duration);
+                seek_slider.value = seekPosition;
+
+                var currentMinutes = Math.floor(curr_track.currentTime / 60);
+                var currentSeconds = Math.floor(curr_track.currentTime - currentMinutes * 60);
+                var durationMinutes = Math.floor(curr_track.duration / 60);
+                var durationSeconds = Math.floor(curr_track.duration - durationMinutes * 60);
+
+                if (currentSeconds < 10) { currentSeconds = "0" + currentSeconds; }
+                if (durationSeconds < 10) { durationSeconds = "0" + durationSeconds; }
+                if (currentMinutes < 10) { currentMinutes = "0" + currentMinutes; }
+                if (durationMinutes < 10) { durationMinutes = "0" + durationMinutes; }
+
+                curr_time.textContent = currentMinutes + ":" + currentSeconds;
+                total_duration.textContent = durationMinutes + ":" + durationSeconds;
+            }
+        }
+
+        function randomTrack() {
+            var randomIndex = Math.floor(Math.random() * genres[genre].songs.length);
+            loadTrack(genre, randomIndex);
+            curr_track.play();
+        }
+
+        function repeatTrack() {
+            curr_track.loop = !curr_track.loop;
+            repeat_btn.classList.toggle("active");
+        }
+
+        function seekTo() {
+            var seekTo = curr_track.duration * (seek_slider.value / 100);
+            curr_track.currentTime = seekTo;
+        }
+
+        function setVolume() {
+            curr_track.volume = volume_slider.value / 100;
+        }
+    </script>
+
+</body>
+</html>
